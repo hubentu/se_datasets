@@ -69,20 +69,20 @@ def convert_ad(afile):
 def AD2Datasets(afile, outdir):
     dset = convert_ad(afile)
     dset.save_to_disk(outdir)
-    return
+    return outdir
 
 
 def convert_se(efiles, pfile, ffile):
     # _logger.debug(f'expression files {efiles}')
-    pdata = pd.read_csv(pfile, index_col=0, dtype=str).astype(str)
-    fdata = pd.read_csv(ffile, index_col=0, dtype=str).astype(str)
+    pdata = pd.read_csv(pfile, dtype=str).astype(str)
+    fdata = pd.read_csv(ffile, dtype=str).astype(str)
     assays = {}
     # if exp_n is None:
     #     exp_n = ['exp'+str(i) for i in range(len(efiles))]
 
     # for k, afile in zip(exp_n, efiles):
     for k, afile in efiles.items():
-        assays[k] = pd.read_csv(afile, index_col=0).astype(float)
+        assays[k] = pd.read_csv(afile).astype(float)
 
     se = SEDataset(assays, pdata, fdata)
 
@@ -100,4 +100,4 @@ def convert_se(efiles, pfile, ffile):
 def SE2Datasets(efiles, pfile, ffile, outdir):
     dset = convert_se(efiles, pfile, ffile)
     dset.save_to_disk(outdir)
-    return
+    return outdir
