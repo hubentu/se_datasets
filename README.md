@@ -1,6 +1,7 @@
 # sedatasets
 
-`sedatasets` is a Python package to convert Bioconductor `SummarizedExperiment` data structure to HuggingFace `datasets`.
+`sedatasets` is a Python package to convert Bioconductor
+`SummarizedExperiment` data structure to HuggingFace `datasets`.
 
 
 # Usage
