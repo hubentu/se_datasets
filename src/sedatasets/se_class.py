@@ -31,7 +31,7 @@ class AnnDataset(Dataset):
         # self.rdict['gene_id'] = ad1.var.index.values
         self.rdict["X"] = ad1.X.toarray()[0]
         # sample annotation
-        obs1 = ad1.obs.iloc[0].to_dict()
+        obs1 = ad1.obs.iloc[0].astype(str).to_dict()
         # ad.file.close()
 
         self.rdict.update(obs1)
@@ -98,5 +98,8 @@ class SEdatasets:
 
     def __repr__(self):
         ds_pr = self.datasets.__repr__()
-        f_pr = f"fdata: {self.fdata.columns.to_list()}"
+        if self.fdata is not None:
+            f_pr = f"fdata: {self.fdata.columns.to_list()}"
+        else:
+            f_pr = None
         return f"{ds_pr}\n{f_pr}"

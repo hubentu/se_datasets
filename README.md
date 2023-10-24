@@ -11,7 +11,6 @@ python -m sedatasets.cli -h
 
 ## Python Module
 ```python
-import datasets
 from sedatasets.se_convert import AD2Datasets, SE2Datasets
 
 SE2Datasets(
