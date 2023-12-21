@@ -1,5 +1,5 @@
 # import json
-from os.path import join
+from os.path import isfile, join
 
 import anndata
 import datasets
@@ -31,9 +31,10 @@ class AnnDataset(Dataset):
         # self.rdict['gene_id'] = ad1.var.index.values
         self.rdict["X"] = ad1.X.toarray()[0]
         # sample annotation
-        obs1 = ad1.obs.iloc[0].astype(str).to_dict()
+        obs1 = ad1.obs.iloc[0].astype(str).to_dict().copy()
         # ad.file.close()
-
+        if "X" in obs1:
+            obs1["obs_X"] = obs1.pop("X")
         self.rdict.update(obs1)
         return self.rdict
 
@@ -89,11 +90,17 @@ class SEdatasets:
 
     def save_to_disk(self, dataset_path, **kwargs):
         self.datasets.save_to_disk(dataset_path, **kwargs)
-        self.fdata.to_csv(join(dataset_path, "fdata.csv"))
+        if self.fdata is not None:
+            if self.fdata.index.values[0] != 0:
+                if self.fdata.index.name not in self.fdata.columns:
+                    self.fdata.reset_index(inplace=True)
+            self.fdata.to_csv(join(dataset_path, "fdata.csv"), index=False)
 
     def load_from_disk(self, dataset_path, **kwargs):
         self.datasets = datasets.load_from_disk(dataset_path, **kwargs)
-        self.fdata = pd.read_csv(join(dataset_path, "fdata.csv"), index_col=0)
+        fpath = join(dataset_path, "fdata.csv")
+        if isfile(fpath):
+            self.fdata = pd.read_csv(fpath)
         return self
 
     def __repr__(self):

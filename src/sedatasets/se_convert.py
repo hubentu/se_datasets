@@ -72,10 +72,12 @@ def AD2Datasets(afile, outdir):
     return outdir
 
 
-def convert_se(efiles, pfile, ffile):
+def convert_se(efiles, pfile, ffile=None):
     # _logger.debug(f'expression files {efiles}')
     pdata = pd.read_csv(pfile, dtype=str).astype(str)
-    fdata = pd.read_csv(ffile, dtype=str).astype(str)
+    fdata = None
+    if ffile is not None:
+        fdata = pd.read_csv(ffile, dtype=str).astype(str)
     assays = {}
     # if exp_n is None:
     #     exp_n = ['exp'+str(i) for i in range(len(efiles))]
